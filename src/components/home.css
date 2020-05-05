@@ -1,0 +1,39 @@
+.link:hover > div {
+  background-color: grey;
+}
+
+.link > div {
+  background-color: #343a40;
+}
+.link:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.linka {
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 25px 150px 25px 150px;
+}
+
+.linka:hover {
+  background-color: grey;
+}
+
+.linka:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.vh-50 {
+  height: 50vh;
+}
+
+.vh-25 {
+  height: 25vh;
+}
+
+.h-33 {
+  height: 33%;
+}
