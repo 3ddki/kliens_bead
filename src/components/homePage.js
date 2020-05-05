@@ -6,13 +6,13 @@ import "./home.css";
 class HomePage extends Component {
   render() {
     return (
-      <React.Fragment>
-        <Logo />
-        <div className="vh-50">
+      <div className="bg-white vh-90 align-content-center mt-4 w-75 mx-auto brad">
+        <div className="h-50 w-75 m-auto">
+          <Logo />
           <div className="container h-100">
             <Link to="/waiting" className="link">
               <div className="row align-items-center text-white h-25 mb-4">
-                <div className="col w-100">Új játék</div>
+                <div className="col w-75">Új játék</div>
               </div>
             </Link>
 
@@ -30,18 +30,21 @@ class HomePage extends Component {
 
             <Link to="/connecting" className="link">
               <div className="row align-items-center text-white h-25 mb-4">
-                <div className="col w-100">Csatlakozás szobához</div>
+                <div className="col w-75">Csatlakozás szobához</div>
               </div>
             </Link>
 
-            <Link to="/asd" className="link">
+            <a
+              href="http://www.ketaklub.hu/letoltes/Stratego%20Aoriginal%20Piatnik.pdf"
+              className="link"
+            >
               <div className="row align-items-center text-white h-25">
-                <div className="col w-100">Szabályok</div>
+                <div className="col w-50">Szabályok</div>
               </div>
-            </Link>
+            </a>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

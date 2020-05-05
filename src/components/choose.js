@@ -12,22 +12,42 @@ class Choose extends Component {
     };
 
     for (let i = 1; i < 6; i++) {
-      td.push(<td style={style}>{i}</td>);
+      td.push(
+        <td key={i} style={style}>
+          {i}
+        </td>
+      );
     }
-    td.push(<td style={style}>B</td>);
-    table.push(<tr>{td}</tr>);
+    td.push(
+      <td key={"B"} style={style}>
+        B
+      </td>
+    );
+    table.push(<tr key={1}>{td}</tr>);
 
     td = [];
     for (let i = 6; i < 11; i++) {
-      td.push(<td style={style}>{i}</td>);
+      td.push(
+        <td key={i} style={style}>
+          {i}
+        </td>
+      );
     }
-    td.push(<td style={style}>F</td>);
-    table.push(<tr>{td}</tr>);
+    td.push(
+      <td key={"F"} style={style}>
+        F
+      </td>
+    );
+    table.push(<tr key={2}>{td}</tr>);
     return table;
   }
 
   render() {
-    return <table className="mx-auto mb-5">{this.chooseTable()}</table>;
+    return (
+      <table className="mx-auto mb-5">
+        <tbody>{this.chooseTable()}</tbody>
+      </table>
+    );
   }
 }
 

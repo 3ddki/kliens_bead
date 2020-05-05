@@ -15,6 +15,7 @@
   color: white;
   text-align: center;
   padding: 25px 150px 25px 150px;
+  margin: auto;
 }
 
 .linka:hover {
@@ -36,4 +37,21 @@
 
 .h-33 {
   height: 33%;
+}
+
+.vh-90 {
+  height: 90vh;
+  z-index: -1;
+  position: realtive;
+}
+
+body {
+  background: url("https://www.wallpaperup.com/uploads/wallpapers/2014/01/29/241794/c1496798bca7fb0b5a5c1ee1ea881fb5-700.jpg");
+  background-size: 100%;
+  background-attachment: fixed;
+  overflow-y: scroll;
+}
+
+.brad {
+  border-radius: 25px;
 }
