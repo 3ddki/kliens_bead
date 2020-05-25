@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import Piece from "./piece.js";
 
 class Choose extends Component {
   chooseTable() {
@@ -11,34 +13,32 @@ class Choose extends Component {
       border: "1px solid black",
     };
 
-    for (let i = 1; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
       td.push(
-        <td key={i} style={style}>
-          {i}
-        </td>
+        <Piece
+          key={i}
+          id={i}
+          style={style}
+          value={this.props.pieces[i].value}
+          selected={this.props.pieces[i].selected}
+        />
       );
     }
-    td.push(
-      <td key={"B"} style={style}>
-        B
-      </td>
-    );
-    table.push(<tr key={1}>{td}</tr>);
+    table.push(<tr key={"1strow"}>{td}</tr>);
 
     td = [];
-    for (let i = 6; i < 11; i++) {
+    for (let i = 6; i < 12; i++) {
       td.push(
-        <td key={i} style={style}>
-          {i}
-        </td>
+        <Piece
+          key={i}
+          id={i}
+          style={style}
+          value={this.props.pieces[i].value}
+          selected={this.props.pieces[i].selected}
+        />
       );
     }
-    td.push(
-      <td key={"F"} style={style}>
-        F
-      </td>
-    );
-    table.push(<tr key={2}>{td}</tr>);
+    table.push(<tr key={"2ndrow"}>{td}</tr>);
     return table;
   }
 
@@ -51,4 +51,8 @@ class Choose extends Component {
   }
 }
 
-export default Choose;
+const mapStateToProps = (state) => ({
+  pieces: state.pieces,
+});
+
+export default connect(mapStateToProps)(Choose);

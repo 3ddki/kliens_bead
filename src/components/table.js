@@ -1,41 +1,34 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import PieceOnBoard from "./pieceOnBoard.js";
 
 class Table extends Component {
   tableMaker() {
     let table = [];
-    const style = {
+    let style = {
       padding: 0,
       width: 50,
       height: 50,
       border: "1px solid black",
     };
 
-    for (let i = 0; i < 4; i++) {
-      let td = [];
-      for (let j = 0; j < 10; j++) {
-        td.push(<td key={"red" + j} style={style} className="bg-dark"></td>);
-      }
-      table.push(<tr key={"red" + i}>{td}</tr>);
-    }
+    let k = 0;
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 6; i++) {
       let td = [];
-      for (let j = 0; j < 10; j++) {
-        td.push(<td key={"white" + j} style={style} className="bg-white"></td>);
-      }
-      table.push(<tr key={"white" + i}>{td}</tr>);
-    }
-
-    for (let i = 0; i < 4; i++) {
-      let td = [];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 6; j++) {
         td.push(
-          <td key={"blue" + j} style={style} className="bg-secondary"></td>
+          <PieceOnBoard
+            key={k}
+            id={k}
+            style={style}
+            piece={this.props.board[k]}
+          />
         );
+        ++k;
       }
-      table.push(<tr key={"blue" + i}>{td}</tr>);
+      table.push(<tr key={i}>{td}</tr>);
     }
-
     return table;
   }
 
@@ -48,4 +41,8 @@ class Table extends Component {
   }
 }
 
-export default Table;
+const mapStateToProps = (state) => ({
+  board: state.board,
+});
+
+export default connect(mapStateToProps)(Table);

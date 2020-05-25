@@ -55,3 +55,23 @@ body {
 .brad {
   border-radius: 25px;
 }
+
+.selected {
+  background-color: lightblue !important;
+}
+
+.linkfade {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+    pointer-events: all;
+  }
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
