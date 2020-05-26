@@ -3,10 +3,14 @@ import Choose from "./choose.js";
 import Table from "./table.js";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { playing, connectingPlayer } from "../actions";
 
 class Connecting extends Component {
+  componentDidMount() {
+    this.props.connectingPlayer();
+  }
   render() {
-    const isEmpty = this.props.select.find((o) => o.value !== "");
+    const isEmpty = this.props.select.pieces2.find((o) => o.value !== "");
     let style = {
       padding: 0,
       width: 50,
@@ -28,7 +32,7 @@ class Connecting extends Component {
             </tbody>
           </table>
           <Table />
-          <Choose />
+          <Choose player={this.props.player} />
 
           <div className="mx-auto h-100 pb-5">
             <div className="container h-100 mx-auto">
@@ -37,6 +41,7 @@ class Connecting extends Component {
                   <Link
                     to="/game"
                     className={"linka " + (isEmpty ? "linkfade" : "")}
+                    onClick={() => this.props.playing()}
                   >
                     Játék
                   </Link>
@@ -58,6 +63,9 @@ class Connecting extends Component {
 
 const mapStateToProps = (state) => ({
   select: state.pieces,
+  player: state.player,
 });
 
-export default connect(mapStateToProps, null)(Connecting);
+export default connect(mapStateToProps, { playing, connectingPlayer })(
+  Connecting
+);

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { connectingPlayer } from "../actions";
 import Logo from "./logo";
 import "./home.css";
 
@@ -28,7 +30,11 @@ class HomePage extends Component {
               </div>
             </div>
 
-            <Link to="/connecting" className="link">
+            <Link
+              to="/connecting"
+              className="link"
+              onClick={() => this.props.connectingPlayer()}
+            >
               <div className="row align-items-center text-white h-25 mb-4">
                 <div className="col w-75">Csatlakozás szobához</div>
               </div>
@@ -49,4 +55,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default connect(null, { connectingPlayer })(HomePage);

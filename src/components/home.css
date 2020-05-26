@@ -75,3 +75,7 @@ body {
     pointer-events: none;
   }
 }
+
+.moveable {
+  border: 3px solid green !important;
+}

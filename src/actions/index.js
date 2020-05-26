@@ -15,3 +15,23 @@ export const selectPiece = (id) => (dispatch) => {
 export const putPieceBack = (id, value, sid) => (dispatch) => {
   dispatch({ type: actions.PUTBACK, payload: { id, value, sid } });
 };
+
+export const connectingPlayer = () => (dispatch) => {
+  dispatch({ type: actions.CONNECTING });
+};
+
+export const playing = () => (dispatch) => {
+  dispatch({ type: actions.PLAYING });
+};
+
+export const moveSelect = (id, player) => (dispatch) => {
+  dispatch({ type: actions.MOVESELECT, payload: { id, player } });
+};
+
+export const move = (id, player) => (dispatch) => {
+  dispatch({ type: actions.MOVE, payload: { id, player } });
+};
+
+export const st = () => (dispatch) => {
+  dispatch({ type: actions.ST });
+};

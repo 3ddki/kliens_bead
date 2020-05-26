@@ -19,8 +19,16 @@ class Choose extends Component {
           key={i}
           id={i}
           style={style}
-          value={this.props.pieces[i].value}
-          selected={this.props.pieces[i].selected}
+          value={
+            this.props.player === 0
+              ? this.props.pieces.pieces2[i].value
+              : this.props.pieces.pieces1[i].value
+          }
+          selected={
+            this.props.player === 0
+              ? this.props.pieces.pieces2[i].selected
+              : this.props.pieces.pieces1[i].selected
+          }
         />
       );
     }
@@ -33,8 +41,16 @@ class Choose extends Component {
           key={i}
           id={i}
           style={style}
-          value={this.props.pieces[i].value}
-          selected={this.props.pieces[i].selected}
+          value={
+            this.props.player === 0
+              ? this.props.pieces.pieces2[i].value
+              : this.props.pieces.pieces1[i].value
+          }
+          selected={
+            this.props.player === 0
+              ? this.props.pieces.pieces2[i].selected
+              : this.props.pieces.pieces1[i].selected
+          }
         />
       );
     }
@@ -44,7 +60,7 @@ class Choose extends Component {
 
   render() {
     return (
-      <table className="mx-auto mb-5">
+      <table className="mx-auto mb-5" style={this.props.style}>
         <tbody>{this.chooseTable()}</tbody>
       </table>
     );

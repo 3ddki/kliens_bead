@@ -4,7 +4,7 @@ import React, { Component } from "react";
 
 class Piece extends Component {
   handleClick(e) {
-    let found = e.select.find((o) => o.selected);
+    let found = e.select.pieces2.find((o) => o.selected);
     let foundb = e.board.find((o) => o.selected);
     if (e.value !== "") {
       e.selectPiece(e.id);
