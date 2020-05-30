@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { moveSelect, move } from "../actions";
+import { moveSelect, move, attack } from "../actions";
 
 class PieceOnPlay extends Component {
   handleClick(e) {
@@ -10,9 +10,11 @@ class PieceOnPlay extends Component {
       e.piece.value !== "b"
     ) {
       e.moveSelect(e.id, e.player);
-    }
-    if (e.piece.moveable) {
+    } else if (e.piece.moveable && e.piece.player === "none") {
       e.move(e.id, e.player);
+    } else if (e.piece.player !== e.player && e.piece.moveable) {
+      let selected = e.board.find((x) => x.selected);
+      e.attack(e.id, e.player, e.piece.value, selected, e.piece.player);
     }
   }
   render() {
@@ -47,4 +49,6 @@ const mapStateToProps = (state) => ({
   player: state.player,
 });
 
-export default connect(mapStateToProps, { moveSelect, move })(PieceOnPlay);
+export default connect(mapStateToProps, { moveSelect, move, attack })(
+  PieceOnPlay
+);

@@ -3,43 +3,19 @@ import { produce } from "immer";
 
 let initialState = [];
 let pieces = [1, 2, 2, 3, 3, 4, 6, 8, 10, "z", "b", "b"];
-for (let i = 0; i < 2; ++i) {
+let pieces2 = [1, 2, 2, 3, 3, 4, 6, 8, 10, "z", "b", "b"];
+let player = 1;
+for (let i = 0; i < 6; ++i) {
+  if (i > 1 && i < 4) player = "none";
+  else if (i > 3) player = 0;
   for (let j = 0; j < 6; ++j) {
     const randomElement = pieces.splice(
       Math.floor(Math.random() * pieces.length),
       1
     );
     initialState.push({
-      player: 1,
-      value: randomElement[0],
-      posX: j,
-      posY: i,
-      selected: false,
-      moveable: false,
-    });
-  }
-}
-
-for (let i = 2; i < 4; ++i) {
-  for (let j = 0; j < 6; ++j) {
-    initialState.push({
-      player: "none",
-      value: "",
-      posX: j,
-      posY: i,
-      selected: false,
-      moveable: false,
-    });
-  }
-}
-
-for (let i = 4; i < 6; ++i) {
-  for (let j = 0; j < 6; ++j) {
-    initialState.push({
-      player: 0,
-      value: "",
-      posX: j,
-      posY: i,
+      player,
+      value: i < 2 ? randomElement[0] : "",
       selected: false,
       moveable: false,
     });
@@ -49,16 +25,31 @@ for (let i = 4; i < 6; ++i) {
 const putReducer = (state = initialState, action) => {
   let found = state.find((o) => o.selected);
   let fid = state.findIndex((o) => o.selected);
+  let ap = action.payload;
+
+  function move(draftState) {
+    draftState[ap.id].value = found.value;
+    draftState.map((x) => (x.moveable = false));
+    draftState[ap.id].player = ap.player;
+    draftState[fid].value = "";
+    draftState[fid].selected = false;
+    draftState[fid].player = "none";
+  }
+
+  function kill(draftState, id = fid) {
+    draftState[id].value = "";
+    draftState[id].player = "none";
+    draftState.map((x) => (x.moveable = false));
+    draftState[id].selected = false;
+  }
+
   switch (action.type) {
     case actions.PUT:
       return produce(state, (draftState) => {
-        if (
-          draftState[action.payload.id].value === "" &&
-          action.payload.sid !== -1
-        ) {
-          draftState[action.payload.id].value = action.payload.value;
-        } else if (action.payload.sid === -1) {
-          draftState[action.payload.id].value = action.payload.value;
+        if (draftState[ap.id].value === "" && ap.sid !== -1) {
+          draftState[ap.id].value = ap.value;
+        } else if (ap.sid === -1) {
+          draftState[ap.id].value = ap.value;
           draftState[fid].value = "";
           draftState[fid].selected = false;
         }
@@ -67,9 +58,9 @@ const putReducer = (state = initialState, action) => {
       return produce(state, (draftState) => {
         if (found) {
           draftState[fid].selected = false;
-          draftState[action.payload.id].selected = true;
+          draftState[ap.id].selected = true;
         } else {
-          draftState[action.payload.id].selected = true;
+          draftState[ap.id].selected = true;
         }
       });
     case actions.SELECT:
@@ -80,26 +71,26 @@ const putReducer = (state = initialState, action) => {
       });
     case actions.PUTBACK:
       return produce(state, (draftState) => {
-        if (action.payload.sid !== -1) {
-          draftState[action.payload.sid].value = "";
-          draftState[action.payload.sid].selected = false;
+        if (ap.sid !== -1) {
+          draftState[ap.sid].value = "";
+          draftState[ap.sid].selected = false;
         }
       });
     case actions.MOVESELECT:
       return produce(state, (dS) => {
         dS.map((x) => (x.moveable = false));
         if (!found) {
-          dS[action.payload.id].selected = true;
-        } else if (found && fid === action.payload.id) {
+          dS[ap.id].selected = true;
+        } else if (found && fid === ap.id) {
           dS[fid].selected = false;
         } else if (found) {
           dS[fid].selected = false;
-          dS[action.payload.id].selected = true;
+          dS[ap.id].selected = true;
         }
 
-        let sid = action.payload.id;
+        let sid = ap.id;
         let selectedPiece = dS[sid];
-        let player = action.payload.player;
+        let player = ap.player;
         if (selectedPiece.value !== 2 && fid !== sid) {
           if (sid !== 0 && sid % 6 !== 0) {
             if (dS[sid - 1].player !== player || dS[sid - 1].value === "") {
@@ -116,7 +107,7 @@ const putReducer = (state = initialState, action) => {
               dS[sid - 6].moveable = true;
             }
           }
-          if (sid < 29) {
+          if (sid < 30) {
             if (dS[sid + 6].player !== player || dS[sid + 6].value === "") {
               dS[sid + 6].moveable = true;
             }
@@ -124,6 +115,8 @@ const putReducer = (state = initialState, action) => {
         }
 
         if (selectedPiece.value === 2 && sid !== fid) {
+          // nem találtam arról infót, hogy átugorhatja-e a bábúkat vagy sem
+          // ezért átugorhatja nálam, csak a tóról találtam ilyen infót
           if (sid < 29) {
             for (let i = sid + 6; i < 36; i += 6) {
               if (dS[i].player !== player) {
@@ -160,12 +153,47 @@ const putReducer = (state = initialState, action) => {
       });
     case actions.MOVE:
       return produce(state, (draftState) => {
-        draftState[action.payload.id].value = found.value;
-        draftState.map((x) => (x.moveable = false));
-        draftState[action.payload.id].player = action.payload.player;
-        draftState[fid].value = "";
-        draftState[fid].selected = false;
-        draftState[fid].player = "none";
+        move(draftState);
+      });
+    case actions.ATTACK:
+      return produce(state, (draftState) => {
+        if (ap.value === "b") {
+          if (found.value === 3) {
+            move(draftState);
+          } else {
+            kill(draftState);
+          }
+        } else if (found.value === 1) {
+          if (ap.value === 10) {
+            move(draftState);
+          } else if (ap.value > found.value) {
+            kill(draftState);
+          } else if (ap.value === found.value) {
+            kill(draftState);
+            kill(draftState, ap.id);
+          }
+        } else {
+          if (ap.value > found.value) {
+            kill(draftState);
+          } else if (ap.value < found.value) {
+            move(draftState);
+          } else if (ap.value === found.value) {
+            kill(draftState);
+            kill(draftState, ap.id);
+          }
+        }
+      });
+    case actions.ST2:
+      return produce(state, (draftState) => {
+        if (state[24].value === "") {
+          for (let i = 24; i < 36; i++) {
+            const randomElement = pieces2.splice(
+              Math.floor(Math.random() * pieces.length),
+              1
+            );
+            draftState[i].value = randomElement[0];
+          }
+        }
       });
     default:
       return state;

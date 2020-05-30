@@ -15,6 +15,13 @@ const playerReducer = (state = initialState, action) => {
         state = 1;
       }
       return state;
+    case actions.ATTACK:
+      if (state === 1) {
+        state = 0;
+      } else {
+        state = 1;
+      }
+      return state;
     default:
       return state;
   }

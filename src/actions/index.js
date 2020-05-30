@@ -35,3 +35,14 @@ export const move = (id, player) => (dispatch) => {
 export const st = () => (dispatch) => {
   dispatch({ type: actions.ST });
 };
+
+export const st2 = () => (dispatch) => {
+  dispatch({ type: actions.ST2 });
+};
+
+export const attack = (id, player, value, selected, playerp) => (dispatch) => {
+  dispatch({
+    type: actions.ATTACK,
+    payload: { id, player, value, selected, playerp },
+  });
+};

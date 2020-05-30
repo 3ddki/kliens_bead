@@ -7,3 +7,5 @@ export const PLAYING = "PLAYING";
 export const MOVESELECT = "MOVESELECT";
 export const MOVE = "MOVE";
 export const ST = "ST";
+export const ST2 = "ST2";
+export const ATTACK = "ATTACK";
