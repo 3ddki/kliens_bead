@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { connectingPlayer } from "../actions";
+import { connectingPlayer, initialize } from "../actions";
 import Logo from "./logo";
 import "./home.css";
 
 class HomePage extends Component {
+  componentDidMount() {
+    this.props.initialize();
+  }
   render() {
     return (
       <div className="bg-white vh-90 align-content-center mt-4 w-75 mx-auto brad">
@@ -30,11 +33,7 @@ class HomePage extends Component {
               </div>
             </div>
 
-            <Link
-              to="/connecting"
-              className="link"
-              onClick={() => this.props.connectingPlayer()}
-            >
+            <Link to="/connecting" className="link">
               <div className="row align-items-center text-white h-25 mb-4">
                 <div className="col w-75">Csatlakozás szobához</div>
               </div>
@@ -55,4 +54,4 @@ class HomePage extends Component {
   }
 }
 
-export default connect(null, { connectingPlayer })(HomePage);
+export default connect(null, { connectingPlayer, initialize })(HomePage);

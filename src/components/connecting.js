@@ -3,11 +3,12 @@ import Choose from "./choose.js";
 import Table from "./table.js";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { playing, connectingPlayer } from "../actions";
+import { playing, connectingPlayer, initialize } from "../actions";
 
 class Connecting extends Component {
   componentDidMount() {
     this.props.connectingPlayer();
+    this.props.initialize();
   }
   render() {
     const isEmpty = this.props.select.pieces2.find((o) => o.value !== "");
@@ -66,6 +67,8 @@ const mapStateToProps = (state) => ({
   player: state.player,
 });
 
-export default connect(mapStateToProps, { playing, connectingPlayer })(
-  Connecting
-);
+export default connect(mapStateToProps, {
+  playing,
+  connectingPlayer,
+  initialize,
+})(Connecting);

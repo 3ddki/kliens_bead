@@ -32,6 +32,10 @@ export const move = (id, player) => (dispatch) => {
   dispatch({ type: actions.MOVE, payload: { id, player } });
 };
 
+export const initialize = () => (dispatch) => {
+  dispatch({ type: actions.INITIALIZE });
+};
+
 export const st = () => (dispatch) => {
   dispatch({ type: actions.ST });
 };
@@ -45,4 +49,8 @@ export const attack = (id, player, value, selected, playerp) => (dispatch) => {
     type: actions.ATTACK,
     payload: { id, player, value, selected, playerp },
   });
+};
+
+export const fighting = (defender, attacker) => (dispatch) => {
+  dispatch({ type: actions.FIGHTING, payload: { defender, attacker } });
 };

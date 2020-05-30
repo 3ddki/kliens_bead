@@ -31,6 +31,13 @@ let initialState = {
     { value: 10, selected: false },
   ],
   gameEnded: false,
+  fight: {
+    fighting: false,
+    attacker: "",
+    defender: "",
+    ar: "",
+    dr: "",
+  },
 };
 
 export default function piecesReducer(state = initialState, action) {
@@ -41,32 +48,34 @@ export default function piecesReducer(state = initialState, action) {
     if (player) draftState.pieces1.find((x) => x.value === "").value = value;
     else draftState.pieces2.find((x) => x.value === "").value = value;
   }
-
-  switch (action.type) {
-    case actions.GET:
-      return produce(state, (draftState) => {
+  return produce(state, (draftState) => {
+    switch (action.type) {
+      case actions.INITIALIZE:
+        draftState.pieces1 = initialState.pieces1;
+        draftState.pieces2 = initialState.pieces2;
+        draftState.fight = initialState.fight;
+        draftState.gameEnded = false;
+        break;
+      case actions.GET:
         if (found) {
           draftState.pieces2[fid].selected = false;
         }
-      });
-    case actions.SELECT:
-      return produce(state, (draftState) => {
+        break;
+      case actions.SELECT:
         if (found && draftState.pieces2[ap.id].value !== "") {
           draftState.pieces2[fid].selected = false;
           draftState.pieces2[ap.id].selected = true;
         } else if (!found && draftState.pieces2[ap.id].value !== "") {
           draftState.pieces2[ap.id].selected = true;
         }
-      });
-    case actions.PUT:
-      return produce(state, (draftState) => {
+        break;
+      case actions.PUT:
         if (ap.sid !== -1) {
           draftState.pieces2[ap.sid].value = "";
           draftState.pieces2[ap.sid].selected = false;
         }
-      });
-    case actions.PUTBACK:
-      return produce(state, (draftState) => {
+        break;
+      case actions.PUTBACK:
         if (ap.sid !== -1) {
           draftState.pieces2[ap.id].value = ap.value;
         } else if (ap.sid === -1) {
@@ -74,18 +83,15 @@ export default function piecesReducer(state = initialState, action) {
           draftState.pieces2[fid].selected = false;
           draftState.pieces2[fid].value = "";
         }
-      });
-    case actions.ST:
-      return produce(state, (draftState) => {
+        break;
+      case actions.ST:
         draftState = draftState.pieces1.map((x) => (x.value = ""));
-      });
-    case actions.ST2:
-      return produce(state, (draftState) => {
+        break;
+      case actions.ST2:
         draftState = draftState.pieces2.map((x) => (x.value = ""));
-      });
-    case actions.ATTACK:
-      console.log(ap.value);
-      return produce(state, (draftState) => {
+        break;
+      case actions.ATTACK:
+        console.log(ap.value);
         if (ap.value === "z") {
           draftState.gameEnded = true;
         } else if (ap.value === "b") {
@@ -113,8 +119,24 @@ export default function piecesReducer(state = initialState, action) {
             kill(draftState, ap.selected.value, ap.selected.player);
           }
         }
-      });
-    default:
-      return state;
-  }
+        break;
+      case actions.FIGHTING:
+        if (!draftState.fight.fighting) {
+          draftState.fight.fighting = true;
+          draftState.fight.attacker = ap.attacker.player;
+          draftState.fight.defender = ap.defender.player;
+          draftState.fight.ar = ap.attacker.value;
+          draftState.fight.dr = ap.defender.value;
+        } else {
+          draftState.fight.fighting = false;
+          draftState.fight.attacker = "";
+          draftState.fight.defender = "";
+          draftState.fight.ar = "";
+          draftState.fight.dr = "";
+        }
+        break;
+      default:
+        draftState = state;
+    }
+  });
 }

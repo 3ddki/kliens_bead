@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { moveSelect, move, attack } from "../actions";
+import { moveSelect, move, attack, fighting } from "../actions";
 
 class PieceOnPlay extends Component {
   handleClick(e) {
@@ -14,7 +14,11 @@ class PieceOnPlay extends Component {
       e.move(e.id, e.player);
     } else if (e.piece.player !== e.player && e.piece.moveable) {
       let selected = e.board.find((x) => x.selected);
-      e.attack(e.id, e.player, e.piece.value, selected, e.piece.player);
+      e.fighting(e.piece, selected);
+      setTimeout(() => {
+        e.attack(e.id, e.player, e.piece.value, selected, e.piece.player);
+        e.fighting(e.piece, selected);
+      }, 3000);
     }
   }
   render() {
@@ -49,6 +53,6 @@ const mapStateToProps = (state) => ({
   player: state.player,
 });
 
-export default connect(mapStateToProps, { moveSelect, move, attack })(
+export default connect(mapStateToProps, { moveSelect, move, attack, fighting })(
   PieceOnPlay
 );

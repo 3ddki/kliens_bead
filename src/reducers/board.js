@@ -2,25 +2,34 @@ import * as actions from "../actions/actionTypes";
 import { produce } from "immer";
 
 let initialState = [];
+
 let pieces = [1, 2, 2, 3, 3, 4, 6, 8, 10, "z", "b", "b"];
 let pieces2 = [1, 2, 2, 3, 3, 4, 6, 8, 10, "z", "b", "b"];
 let player = 1;
-for (let i = 0; i < 6; ++i) {
-  if (i > 1 && i < 4) player = "none";
-  else if (i > 3) player = 0;
-  for (let j = 0; j < 6; ++j) {
-    const randomElement = pieces.splice(
-      Math.floor(Math.random() * pieces.length),
-      1
-    );
-    initialState.push({
-      player,
-      value: i < 2 ? randomElement[0] : "",
-      selected: false,
-      moveable: false,
-    });
+function initialize() {
+  initialState = [];
+  for (let i = 0; i < 6; ++i) {
+    if (i > 1 && i < 4) player = "none";
+    else if (i > 3) player = 0;
+    for (let j = 0; j < 6; ++j) {
+      const randomElement = pieces.splice(
+        Math.floor(Math.random() * pieces.length),
+        1
+      );
+      initialState.push({
+        player,
+        value: i < 2 ? randomElement[0] : "",
+        selected: false,
+        moveable: false,
+      });
+    }
   }
+  pieces = [1, 2, 2, 3, 3, 4, 6, 8, 10, "z", "b", "b"];
+  pieces2 = [1, 2, 2, 3, 3, 4, 6, 8, 10, "z", "b", "b"];
+  player = 1;
 }
+
+initialize();
 
 const putReducer = (state = initialState, action) => {
   let found = state.find((o) => o.selected);
@@ -44,6 +53,13 @@ const putReducer = (state = initialState, action) => {
   }
 
   switch (action.type) {
+    case actions.INITIALIZE:
+      return produce(state, (draftState) => {
+        initialize();
+        for (let i = 0; i < 36; i++) {
+          draftState[i] = initialState[i];
+        }
+      });
     case actions.PUT:
       return produce(state, (draftState) => {
         if (draftState[ap.id].value === "" && ap.sid !== -1) {
@@ -188,10 +204,11 @@ const putReducer = (state = initialState, action) => {
         if (state[24].value === "") {
           for (let i = 24; i < 36; i++) {
             const randomElement = pieces2.splice(
-              Math.floor(Math.random() * pieces.length),
+              Math.floor(Math.random() * pieces2.length),
               1
             );
             draftState[i].value = randomElement[0];
+            console.log(draftState[i].value);
           }
         }
       });

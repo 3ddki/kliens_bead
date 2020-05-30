@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Playtable from "./playtable";
 import GameEnded from "./gameended";
 import Choose from "./choose.js";
+import Fight from "./fight.js";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { playing, st, st2 } from "../actions";
@@ -19,6 +20,10 @@ class Game extends Component {
       height: 50,
       border: "1px solid black",
     };
+    let fighting = this.props.pieces.fight.fighting
+      ? { pointerEvents: "none" }
+      : {};
+
     if (this.props.pieces.gameEnded) {
       return <GameEnded />;
     } else {
@@ -39,7 +44,7 @@ class Game extends Component {
             </tbody>
           </table>
           <Choose player={1} style={{ pointerEvents: "none" }} />
-          <Playtable />
+          <Playtable style={fighting} />
           <Choose player={0} style={{ pointerEvents: "none" }} />
         </React.Fragment>
       );
@@ -50,6 +55,7 @@ class Game extends Component {
       <div className="bg-white h-100 align-content-center mt-4 w-75 mx-auto pt-4 mb-4 brad">
         <div className="h-50 w-100 m-auto">
           {this.playing()}
+          <Fight />
 
           <div className="mx-auto h-100 pb-5">
             <div className="container h-100 mx-auto">
