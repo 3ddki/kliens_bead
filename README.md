@@ -11,3 +11,5 @@ hogy mindaddig, amíg egy hallgató egy másik hallgató munkáját - vagy legal
 az fegyelmi vétségnek számít. A fegyelmi vétség legsúlyosabb következménye a hallgató elbocsátása az egyetemről.
 
 https://codesandbox.io/s/github/3ddki/kliens_bead
+
+[![Run on Repl.it](https://repl.it/badge/github/3ddki/kliens_bead)](https://repl.it/github/3ddki/kliens_bead)
