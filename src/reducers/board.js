@@ -12,13 +12,14 @@ function initialize() {
     if (i > 1 && i < 4) player = "none";
     else if (i > 3) player = 0;
     for (let j = 0; j < 6; ++j) {
+      /* 
       const randomElement = pieces.splice(
         Math.floor(Math.random() * pieces.length),
         1
-      );
+      ); */
       initialState.push({
         player,
-        value: i < 2 ? randomElement[0] : "",
+        value: "",
         selected: false,
         moveable: false,
       });
@@ -203,6 +204,18 @@ const putReducer = (state = initialState, action) => {
           }
         }
         break;
+      case actions.ST:
+        if (state[0].value === "") {
+          for (let i = 0; i < 12; i++) {
+            const randomElement = pieces.splice(
+              Math.floor(Math.random() * pieces.length),
+              1
+            );
+            draftState[i].value = randomElement[0];
+            console.log(draftState[i].value);
+          }
+        }
+        break;
       case actions.ST2:
         if (state[24].value === "") {
           for (let i = 24; i < 36; i++) {
@@ -214,6 +227,11 @@ const putReducer = (state = initialState, action) => {
             console.log(draftState[i].value);
           }
         }
+        break;
+      case actions.UPDATESTATE:
+        action.payload.board.forEach((piece, i) => {
+          draftState[i] = piece;
+        });
         break;
       default:
         return state;

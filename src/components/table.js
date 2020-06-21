@@ -34,7 +34,7 @@ class Table extends Component {
 
   render() {
     return (
-      <table className="mx-auto mb-5">
+      <table className="mx-auto mb-5" style={this.props.style}>
         <tbody>{this.tableMaker()}</tbody>
       </table>
     );

@@ -4,15 +4,22 @@ import React, { Component } from "react";
 
 class Piece extends Component {
   handleClick(e) {
-    let found = e.select.pieces2.find((o) => o.selected);
+    let found = "";
+    if (e.player.player === 0) {
+      found = e.select.pieces2.find((o) => o.selected);
+      console.log(found);
+    } else {
+      found = e.select.pieces1.find((o) => o.selected);
+      console.log(found);
+    }
     let foundb = e.board.find((o) => o.selected);
     if (e.value !== "") {
-      e.selectPiece(e.id);
+      e.selectPiece(e.id, e.player.player);
     } else if (foundb && e.value === "") {
       let fid = e.board.findIndex((o) => o.selected);
-      e.putPieceBack(e.id, foundb.value, fid);
+      e.putPieceBack(e.id, foundb.value, fid, e.player.player);
     } else if (found && e.value === "") {
-      e.putPieceBack(e.id, found.value, -1);
+      e.putPieceBack(e.id, found.value, -1, e.player.player);
     }
   }
   render() {
@@ -31,6 +38,7 @@ class Piece extends Component {
 const mapStateToProps = (state) => ({
   select: state.pieces,
   board: state.board,
+  player: state.player,
 });
 
 export default connect(mapStateToProps, { selectPiece, putPieceBack })(Piece);

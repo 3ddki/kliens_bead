@@ -5,13 +5,13 @@ import Choose from "./choose.js";
 import Fight from "./fight.js";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { playing, st, st2 } from "../actions";
+import { playing, st, st2, sync, leaveRoom } from "../actions";
 
 class Game extends Component {
   componentDidMount() {
     this.props.st();
-    this.props.playing();
     this.props.st2();
+    this.props.sync();
   }
   playing() {
     let style = {
@@ -37,7 +37,9 @@ class Game extends Component {
               <tr>
                 <td>Játékos:</td>
                 <td
-                  className={this.props.player ? "bg-dark" : "bg-secondary"}
+                  className={
+                    this.props.player.currentPlayer ? "bg-dark" : "bg-secondary"
+                  }
                   style={style}
                 ></td>
               </tr>
@@ -61,9 +63,14 @@ class Game extends Component {
             <div className="container h-100 mx-auto">
               <div className="row align-items-center h-50 w-75 mx-auto">
                 <div className="cell w-50 align-items-center mx-auto">
-                  <Link to="/" className="linka">
-                    Vissza
-                  </Link>
+                  <a
+                    href=""
+                    role="button"
+                    onClick={() => this.props.leaveRoom()}
+                    className="linka"
+                  >
+                    Kilépés
+                  </a>
                 </div>
               </div>
             </div>
@@ -79,4 +86,6 @@ const mapStateToProps = (state) => ({
   pieces: state.pieces,
 });
 
-export default connect(mapStateToProps, { playing, st, st2 })(Game);
+export default connect(mapStateToProps, { playing, st, st2, sync, leaveRoom })(
+  Game
+);

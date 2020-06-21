@@ -17,13 +17,15 @@ class GameEnded extends Component {
             <tr>
               <td
                 style={style}
-                className={!this.props.player ? "bg-dark" : "bg-secondary"}
+                className={
+                  !this.props.player.currentPlayer ? "bg-dark" : "bg-secondary"
+                }
               ></td>
             </tr>
           </tbody>
         </table>
         <h2 className="mb-5 mx-auto">
-          {!this.props.player ? "1. " : "2. "} játékos
+          {!this.props.player.currentPlayer ? "1. " : "2. "} játékos
         </h2>
       </div>
     );

@@ -1,26 +1,48 @@
 import React, { Component } from "react";
 import Choose from "./choose.js";
 import Table from "./table.js";
+import ReadyPopup from "./readyPopup.js";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { playing, connectingPlayer, initialize } from "../actions";
+import {
+  playing,
+  connectingPlayer,
+  initialize,
+  setReady,
+  sync,
+  leaveRoom,
+} from "../actions";
 
 class Connecting extends Component {
   componentDidMount() {
     this.props.connectingPlayer();
     this.props.initialize();
   }
+
+  ready = () => {
+    this.props.setReady();
+    this.props.sync();
+  };
+
   render() {
-    const isEmpty = this.props.select.pieces2.find((o) => o.value !== "");
+    let ready = this.props.player.isReady ? { pointerEvents: "none" } : {};
+    let isEmpty = this.props.select.pieces2.find((o) => o.value !== "");
+    let isReady = this.props.player.isReady;
+    if (this.props.player.player === 1) {
+      isEmpty = this.props.select.pieces1.find((o) => o.value !== "");
+      isReady = this.props.player.isReady;
+    }
     let style = {
       padding: 0,
       width: 50,
       height: 50,
       border: "1px solid black",
     };
+
     return (
       <div className="bg-white h-100 align-content-center mt-4 w-75 mx-auto pt-4 mb-4 brad">
         <div className="h-50 w-100 m-auto">
+          <ReadyPopup />
           <table
             className="mb-5 mx-auto"
             style={{ borderSpacing: "10px", borderCollapse: "separate" }}
@@ -28,30 +50,41 @@ class Connecting extends Component {
             <tbody>
               <tr>
                 <td>A te színed: </td>
-                <td className="bg-secondary" style={style}></td>
+                <td
+                  className={
+                    this.props.player.player === 0 ? "bg-secondary" : "bg-dark"
+                  }
+                  style={style}
+                ></td>
               </tr>
             </tbody>
           </table>
-          <Table />
-          <Choose player={this.props.player} />
+          <Table style={ready} />
+          <Choose player={this.props.player.player} style={ready} />
 
           <div className="mx-auto h-100 pb-5">
             <div className="container h-100 mx-auto">
               <div className="row align-items-center h-50 w-75 mx-auto">
                 <div className="cell w-50 align-items-center">
-                  <Link
-                    to="/game"
-                    className={"linka " + (isEmpty ? "linkfade" : "")}
-                    onClick={() => this.props.playing()}
+                  <a
+                    className={
+                      "linka " + (isEmpty || isReady ? "linkfade" : "")
+                    }
+                    onClick={() => this.ready()}
                   >
                     Játék
-                  </Link>
+                  </a>
                 </div>
 
                 <div className="cell w-50 align-items-center">
-                  <Link to="/" className="linka">
+                  <a
+                    href=""
+                    role="button"
+                    onClick={() => this.props.leaveRoom()}
+                    className="linka"
+                  >
                     Vissza
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -71,4 +104,7 @@ export default connect(mapStateToProps, {
   playing,
   connectingPlayer,
   initialize,
+  setReady,
+  sync,
+  leaveRoom,
 })(Connecting);

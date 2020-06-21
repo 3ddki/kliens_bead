@@ -1,8 +1,8 @@
 Jenei Adrián Dávid
 GMSRO5
 Kliensoldali webprogramozás - Stratego
-2020.05.05.
-Ezt a megoldást Jenei Adrián Dávid, GMSRO5 küldte be és készítette a Kliensoldali webprogramozáskurzus Stratego feladatához.
+2020.06.21.
+Ezt a megoldást Jenei Adrián Dávid, GMSRO5 küldte be és készítette a Kliensoldali webprogramozás kurzus Stratego feladatához.
 Kijelentem, hogy ez a megoldás a saját munkám.
 Nem másoltam vagy használtam harmadik féltől származó megoldásokat.
 Nem továbbítottam megoldást hallgatótársaimnak, és nem is tettem közzé.

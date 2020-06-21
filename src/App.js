@@ -1,25 +1,49 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import HomePage from "./components/homePage";
 import Waiting from "./components/waiting";
 import Connecting from "./components/connecting";
 import Game from "./components/game";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { connectSocket } from "./actions";
+import { connect } from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/waiting" component={Waiting} />
-          <Route path="/connecting" component={Connecting} />
-          <Route path="/game" component={Game} />
-        </Switch>
-      </Router>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    this.props.connectSocket();
+  }
+  render() {
+    switch (this.props.player.gameState) {
+      case "WAITING":
+        return (
+          <div className="App">
+            <Waiting />
+          </div>
+        );
+      case "CONNECTING":
+        return (
+          <div className="App">
+            <Connecting />
+          </div>
+        );
+      case "PLAYING":
+        return (
+          <div className="App">
+            <Game />
+          </div>
+        );
+      default:
+        return (
+          <div className="App">
+            <HomePage />
+          </div>
+        );
+    }
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  player: state.player,
+});
+
+export default connect(mapStateToProps, { connectSocket })(App);

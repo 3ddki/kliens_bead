@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
 import Logo from "./logo";
+import { connect } from "react-redux";
+import { goBack } from "../actions";
 
 class Wait extends Component {
   render() {
@@ -13,16 +15,19 @@ class Wait extends Component {
             <div className="container h-100">
               <div className="row align-items-center h-50 mb-4">
                 <div className="col w-100">Azonosító: </div>
-                <div className="col w-100">
-                  {Math.floor(Math.random() * (100000 - 10000)) + 10000}
-                </div>
+                <div className="col w-100">{this.props.player.roomNumber}</div>
               </div>
 
-              <Link to="/" className="link">
+              <a
+                href=""
+                role="button"
+                onClick={() => this.props.goBack()}
+                className="link"
+              >
                 <div className="row  align-items-center text-white h-25">
                   <div className="col w-100">Vissza</div>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -31,4 +36,8 @@ class Wait extends Component {
   }
 }
 
-export default Wait;
+const mapStateToProps = (state) => ({
+  player: state.player,
+});
+
+export default connect(mapStateToProps, { goBack })(Wait);

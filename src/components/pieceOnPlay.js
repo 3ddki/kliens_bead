@@ -1,24 +1,34 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { moveSelect, move, attack, fighting } from "../actions";
+import { moveSelect, move, attack, fighting, sync } from "../actions";
 
 class PieceOnPlay extends Component {
   handleClick(e) {
     if (
-      e.piece.player === e.player &&
+      e.piece.player === e.player.player &&
+      e.player.player === e.player.currentPlayer &&
       e.piece.value !== "z" &&
       e.piece.value !== "b"
     ) {
-      e.moveSelect(e.id, e.player);
+      e.moveSelect(e.id, e.player.player);
     } else if (e.piece.moveable && e.piece.player === "none") {
-      e.move(e.id, e.player);
-    } else if (e.piece.player !== e.player && e.piece.moveable) {
+      e.move(e.id, e.player.player);
+      e.sync();
+    } else if (e.piece.player !== e.player.player && e.piece.moveable) {
       let selected = e.board.find((x) => x.selected);
       e.fighting(e.piece, selected);
       setTimeout(() => {
-        e.attack(e.id, e.player, e.piece.value, selected, e.piece.player);
+        e.attack(
+          e.id,
+          e.player.player,
+          e.piece.value,
+          selected,
+          e.piece.player
+        );
         e.fighting(e.piece, selected);
+        e.sync();
       }, 3000);
+      e.sync();
     }
   }
   render() {
@@ -41,7 +51,7 @@ class PieceOnPlay extends Component {
         className={bg + selected + moveable}
         onClick={() => this.handleClick(piece)}
       >
-        {piece.player === piece.piece.player ? piece.piece.value : ""}
+        {piece.player.player === piece.piece.player ? piece.piece.value : ""}
       </td>
     );
   }
@@ -53,6 +63,10 @@ const mapStateToProps = (state) => ({
   player: state.player,
 });
 
-export default connect(mapStateToProps, { moveSelect, move, attack, fighting })(
-  PieceOnPlay
-);
+export default connect(mapStateToProps, {
+  moveSelect,
+  move,
+  attack,
+  fighting,
+  sync,
+})(PieceOnPlay);

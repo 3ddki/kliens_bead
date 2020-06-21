@@ -57,31 +57,71 @@ export default function piecesReducer(state = initialState, action) {
         draftState.gameEnded = false;
         break;
       case actions.GET:
-        if (found) {
-          draftState.pieces2[fid].selected = false;
+        if (action.payload.player === 0) {
+          if (found) {
+            draftState.pieces2[fid].selected = false;
+          }
+        } else {
+          found = state.pieces1.find((o) => o.selected);
+          if (found) {
+            fid = state.pieces1.findIndex((o) => o.selected);
+            draftState.pieces1[fid].selected = false;
+          }
         }
         break;
       case actions.SELECT:
-        if (found && draftState.pieces2[ap.id].value !== "") {
-          draftState.pieces2[fid].selected = false;
-          draftState.pieces2[ap.id].selected = true;
-        } else if (!found && draftState.pieces2[ap.id].value !== "") {
-          draftState.pieces2[ap.id].selected = true;
+        if (action.payload.player === 0) {
+          if (found && draftState.pieces2[ap.id].value !== "") {
+            draftState.pieces2[fid].selected = false;
+            draftState.pieces2[ap.id].selected = true;
+          } else if (!found && draftState.pieces2[ap.id].value !== "") {
+            draftState.pieces2[ap.id].selected = true;
+          }
+        } else {
+          fid = state.pieces1.findIndex((o) => o.selected);
+          found = state.pieces1.find((o) => o.selected);
+          if (found && draftState.pieces1[ap.id].value !== "") {
+            draftState.pieces1[fid].selected = false;
+            draftState.pieces1[ap.id].selected = true;
+          } else if (!found && draftState.pieces1[ap.id].value !== "") {
+            draftState.pieces1[ap.id].selected = true;
+          }
         }
         break;
       case actions.PUT:
-        if (ap.sid !== -1) {
-          draftState.pieces2[ap.sid].value = "";
-          draftState.pieces2[ap.sid].selected = false;
+        if (action.payload.player === 0) {
+          if (ap.sid !== -1) {
+            draftState.pieces2[ap.sid].value = "";
+            draftState.pieces2[ap.sid].selected = false;
+          }
+        } else {
+          fid = state.pieces1.findIndex((o) => o.selected);
+          found = state.pieces1.find((o) => o.selected);
+          if (ap.sid !== -1) {
+            draftState.pieces1[ap.sid].value = "";
+            draftState.pieces1[ap.sid].selected = false;
+          }
         }
         break;
       case actions.PUTBACK:
-        if (ap.sid !== -1) {
-          draftState.pieces2[ap.id].value = ap.value;
-        } else if (ap.sid === -1) {
-          draftState.pieces2[ap.id].value = ap.value;
-          draftState.pieces2[fid].selected = false;
-          draftState.pieces2[fid].value = "";
+        if (action.payload.player === 0) {
+          if (ap.sid !== -1) {
+            draftState.pieces2[ap.id].value = ap.value;
+          } else if (ap.sid === -1) {
+            draftState.pieces2[ap.id].value = ap.value;
+            draftState.pieces2[fid].selected = false;
+            draftState.pieces2[fid].value = "";
+          }
+        } else {
+          fid = state.pieces1.findIndex((o) => o.selected);
+          found = state.pieces1.find((o) => o.selected);
+          if (ap.sid !== -1) {
+            draftState.pieces1[ap.id].value = ap.value;
+          } else if (ap.sid === -1) {
+            draftState.pieces1[ap.id].value = ap.value;
+            draftState.pieces1[fid].selected = false;
+            draftState.pieces1[fid].value = "";
+          }
         }
         break;
       case actions.ST:
@@ -134,6 +174,12 @@ export default function piecesReducer(state = initialState, action) {
           draftState.fight.ar = "";
           draftState.fight.dr = "";
         }
+        break;
+      case actions.UPDATESTATE:
+        draftState.pieces1 = action.payload.pieces.pieces1;
+        draftState.pieces2 = action.payload.pieces.pieces2;
+        draftState.fight = action.payload.pieces.fight;
+        draftState.gameEnded = action.payload.pieces.gameEnded;
         break;
       default:
         draftState = state;

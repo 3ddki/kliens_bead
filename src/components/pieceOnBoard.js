@@ -5,14 +5,28 @@ import { putPiece, getPiece } from "../actions";
 class PieceOnBoard extends Component {
   handleClick(e) {
     let found = e.select.pieces2.find((o) => o.selected);
+    if (e.player.player === 0) {
+      found = e.select.pieces2.find((o) => o.selected);
+    } else {
+      found = e.select.pieces1.find((o) => o.selected);
+    }
     let foundb = e.board.find((o) => o.selected);
-    if (found && e.player === e.piece.player && e.piece.value === "") {
-      let fid = e.select.pieces2.findIndex((o) => o.selected);
-      e.putPiece(e.id, found.value, fid);
-    } else if (e.player === e.piece.player && e.piece.value !== "") {
-      e.getPiece(e.id, e.piece.value);
-    } else if (foundb && e.player === e.piece.player && e.piece.value === "") {
-      e.putPiece(e.id, foundb.value, -1);
+    if (found && e.player.player === e.piece.player && e.piece.value === "") {
+      if (e.player.player === 0) {
+        let fid = e.select.pieces2.findIndex((o) => o.selected);
+        e.putPiece(e.id, found.value, fid, e.player.player);
+      } else {
+        let fid = e.select.pieces1.findIndex((o) => o.selected);
+        e.putPiece(e.id, found.value, fid, e.player.player);
+      }
+    } else if (e.player.player === e.piece.player && e.piece.value !== "") {
+      e.getPiece(e.id, e.piece.value, e.player.player);
+    } else if (
+      foundb &&
+      e.player.player === e.piece.player &&
+      e.piece.value === ""
+    ) {
+      e.putPiece(e.id, foundb.value, -1, e.player.player);
     }
   }
   render() {
@@ -35,7 +49,7 @@ class PieceOnBoard extends Component {
         className={bg + selected}
         onClick={() => this.handleClick(piece)}
       >
-        {piece.player === piece.piece.player ? piece.piece.value : ""}
+        {piece.player.player === piece.piece.player ? piece.piece.value : ""}
       </td>
     );
   }

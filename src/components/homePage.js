@@ -1,7 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { connectingPlayer, initialize } from "../actions";
+import {
+  connectingPlayer,
+  initialize,
+  joinRoom,
+  createRoom,
+  connectSocket,
+} from "../actions";
 import Logo from "./logo";
 import "./home.css";
 
@@ -9,17 +14,28 @@ class HomePage extends Component {
   componentDidMount() {
     this.props.initialize();
   }
+
+  newGame = () => {
+    this.props.createRoom();
+  };
+
+  joinGame = (e) => {
+    if (e.value) {
+      this.props.joinRoom(e.value);
+    }
+  };
+
   render() {
     return (
       <div className="bg-white vh-90 align-content-center mt-4 w-75 mx-auto brad">
         <div className="h-50 w-75 m-auto">
           <Logo />
           <div className="container h-100">
-            <Link to="/waiting" className="link">
+            <a onClick={() => this.newGame()} className="link" role="button">
               <div className="row align-items-center text-white h-25 mb-4">
                 <div className="col w-75">Új játék</div>
               </div>
-            </Link>
+            </a>
 
             <div className="row align-items-center">
               <div className="col w-100 p-0">
@@ -33,11 +49,15 @@ class HomePage extends Component {
               </div>
             </div>
 
-            <Link to="/connecting" className="link">
+            <a
+              role="button"
+              onClick={() => this.joinGame(document.getElementById("roomId"))}
+              className="link"
+            >
               <div className="row align-items-center text-white h-25 mb-4">
                 <div className="col w-75">Csatlakozás szobához</div>
               </div>
-            </Link>
+            </a>
 
             <a
               href="http://www.ketaklub.hu/letoltes/Stratego%20Aoriginal%20Piatnik.pdf"
@@ -54,4 +74,10 @@ class HomePage extends Component {
   }
 }
 
-export default connect(null, { connectingPlayer, initialize })(HomePage);
+export default connect(null, {
+  connectingPlayer,
+  initialize,
+  joinRoom,
+  createRoom,
+  connectSocket,
+})(HomePage);

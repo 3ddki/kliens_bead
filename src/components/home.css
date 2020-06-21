@@ -12,7 +12,7 @@
 
 .linka {
   background-color: #343a40;
-  color: white;
+  color: white !important;
   text-align: center;
   padding: 25px 150px 25px 150px;
   margin: auto;
